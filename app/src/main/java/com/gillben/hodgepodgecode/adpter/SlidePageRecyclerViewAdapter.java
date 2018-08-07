@@ -37,14 +37,15 @@ public class SlidePageRecyclerViewAdapter extends RecyclerView.Adapter<SlidePage
     public void onBindViewHolder(@NonNull final SlideMenuPageHolder holder, int position) {
         if (dataList != null) {
             holder.textView.setText(dataList.get(position));
-            holder.button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    holder.slideMenuPage.smoothClose();
-                }
-            });
-            holder.itemView.setTag(position);
+//            holder.button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(mContext,"点击关闭", Toast.LENGTH_SHORT).show();
+//                    holder.slideMenuPage.smoothClose();
+//                }
+//            });
             holder.itemView.setOnClickListener(this);
+            holder.itemView.setTag(position);
         }
     }
 

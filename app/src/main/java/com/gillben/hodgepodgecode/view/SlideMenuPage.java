@@ -8,20 +8,21 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.LinearInterpolator;
 
 import com.gillben.hodgepodgecode.R;
-
-import java.util.Arrays;
 
 
 public class SlideMenuPage extends ViewGroup {
 
+
+    private static final String TAG = "SlideMenuPage";
 
     private int selfHeight;
     //右边menu的宽度,也是滑动的最大距离
@@ -128,6 +129,7 @@ public class SlideMenuPage extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
+        setClickable(true);
         contentViewWidth = 0;
         rightMenuWidth = 0;
         selfHeight = 0;
@@ -137,6 +139,8 @@ public class SlideMenuPage extends ViewGroup {
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
+            childView.setClickable(true);
+
             if (childView.getVisibility() != GONE) {
                 measureChild(childView, widthMeasureSpec, heightMeasureSpec);
                 final MarginLayoutParams layoutParams = (MarginLayoutParams) childView.getLayoutParams();
@@ -157,7 +161,7 @@ public class SlideMenuPage extends ViewGroup {
             }
         }
         //save
-        setMeasuredDimension(getPaddingLeft()+ getPaddingRight() + contentViewWidth,
+        setMeasuredDimension(getPaddingLeft() + getPaddingRight() + contentViewWidth,
                 getPaddingTop() + getPaddingBottom() + selfHeight);
 
         slideMenuLimitDistance = rightMenuWidth * 2 / 5;
@@ -239,6 +243,7 @@ public class SlideMenuPage extends ViewGroup {
                     isIntercept = false;
                     //防止多个手指触碰
                     if (isTouched) {
+                        Log.e(TAG, "dispatchTouchEvent: isTouched = true");
                         return false;
                     } else {
                         isTouched = true;
@@ -270,7 +275,7 @@ public class SlideMenuPage extends ViewGroup {
                         nonMove = false;
                     }
                     scrollBy((int) offset, 0);   //滑动
-
+                    //超出范围，修正
                     if (isSlidingLeft) {
                         if (getScrollX() < 0) {
                             scrollTo(0, 0);
@@ -292,7 +297,7 @@ public class SlideMenuPage extends ViewGroup {
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     //用户已经滑动
-                    if (Math.abs(ev.getRawX() - lastPoint.x) > mTouchSlop) {
+                    if (Math.abs(ev.getRawX() - firstPoint.x) > mTouchSlop) {
                         userSliding = true;
                     }
                     //计算最大速度
@@ -324,6 +329,7 @@ public class SlideMenuPage extends ViewGroup {
                     }
                     releaseVelocityTracker();
                     isTouched = false;
+                    getParent().requestDisallowInterceptTouchEvent(false);
                     break;
                 default:
                     break;
@@ -391,7 +397,7 @@ public class SlideMenuPage extends ViewGroup {
                 scrollTo((Integer) animation.getAnimatedValue(), 0);
             }
         });
-        openAnimator.setInterpolator(new OvershootInterpolator());
+        openAnimator.setInterpolator(new LinearInterpolator());
         openAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -415,7 +421,7 @@ public class SlideMenuPage extends ViewGroup {
                 scrollTo((Integer) animation.getAnimatedValue(), 0);
             }
         });
-        closeAnimator.setInterpolator(new OvershootInterpolator());
+        closeAnimator.setInterpolator(new LinearInterpolator());
         closeAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -466,15 +472,6 @@ public class SlideMenuPage extends ViewGroup {
         return Math.abs(getScrollX()) <= mTouchSlop && super.performLongClick();
     }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            child.setFocusable(true);
-            child.setEnabled(true);
-        }
-    }
 
     @Override
     protected void onDetachedFromWindow() {
