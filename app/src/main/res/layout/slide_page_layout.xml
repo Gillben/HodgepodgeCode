@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.gillben.hodgepodgecode.view.SlideMenuPage xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/slideMenuPage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:SlideEnable="true"
+    app:SlideIntercept="true"
+    app:SlideLeft="true">
+
+    <TextView
+        android:id="@+id/mainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ef9c6a"
+        android:gravity="center"
+        android:text="滑动试试看"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/menuBt"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:text="关闭" />
+
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:text="测试" />
+
+</com.gillben.hodgepodgecode.view.SlideMenuPage>
