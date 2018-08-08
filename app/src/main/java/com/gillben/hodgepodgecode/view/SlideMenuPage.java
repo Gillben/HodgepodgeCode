@@ -23,14 +23,12 @@ public class SlideMenuPage extends ViewGroup {
 
 
     private static final String TAG = "SlideMenuPage";
+    private static final boolean DEBUG = false;
 
-    private int selfHeight;
     //右边menu的宽度,也是滑动的最大距离
     private int rightMenuWidth;
     //保存主内容View
     private View contentView;
-    //主内容View的宽度
-    private int contentViewWidth;
 
     private int mTouchSlop;
     //menu滑动的限制距离，大于这个值时才弹出
@@ -50,7 +48,6 @@ public class SlideMenuPage extends ViewGroup {
     private boolean tempIntercept;
     //记录点击Id
     private int mPointerId;
-
 
     //缓存自己
     @SuppressLint("StaticFieldLeak")
@@ -120,19 +117,20 @@ public class SlideMenuPage extends ViewGroup {
         return this;
     }
 
-
-    public static SlideMenuPage getCacheSelf() {
-        return cacheSelf;
+    public boolean isOpen() {
+        return isOpen;
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         setClickable(true);
-        contentViewWidth = 0;
+        int contentViewWidth = 0;
+        int selfHeight = 0;
+
         rightMenuWidth = 0;
-        selfHeight = 0;
         final boolean childViewIfNeedMatchParent = MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY;
         boolean childViewIncludeMatchParentAttr = false;
 
@@ -164,7 +162,7 @@ public class SlideMenuPage extends ViewGroup {
         setMeasuredDimension(getPaddingLeft() + getPaddingRight() + contentViewWidth,
                 getPaddingTop() + getPaddingBottom() + selfHeight);
 
-        slideMenuLimitDistance = rightMenuWidth * 2 / 5;
+        slideMenuLimitDistance = rightMenuWidth * 2 / 7;
         if (childViewIncludeMatchParentAttr) {
             forceUniformHeight(childCount, widthMeasureSpec);
         }
@@ -243,7 +241,7 @@ public class SlideMenuPage extends ViewGroup {
                     isIntercept = false;
                     //防止多个手指触碰
                     if (isTouched) {
-                        Log.e(TAG, "dispatchTouchEvent: isTouched = true");
+                        log("dispatchTouchEvent: isTouched = true");
                         return false;
                     } else {
                         isTouched = true;
@@ -253,19 +251,18 @@ public class SlideMenuPage extends ViewGroup {
 
                     //如果当前点击和cacheSelf不同，则立刻还原
                     if (cacheSelf != null) {
-                        if (cacheSelf != this) {
+                        log("dispatchTouchEvent: " + "cacheSelf: " + cacheSelf.hashCode() + " - " + "this: " + SlideMenuPage.this.hashCode());
+                        if (cacheSelf != SlideMenuPage.this) {
                             cacheSelf.smoothClose();
                             isIntercept = tempIntercept;
                         }
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
-                    mPointerId = ev.getPointerId(0); //只记录第一个手指点击Id
+                    //只记录第一个手指点击Id
+                    mPointerId = ev.getPointerId(0);
                     break;
 
                 case MotionEvent.ACTION_MOVE:
-                    if (isIntercept) {
-                        break;
-                    }
                     float offset = lastPoint.x - ev.getRawX();
                     if (Math.abs(offset) > 10 || Math.abs(getScrollX()) > 10) {
                         getParent().requestDisallowInterceptTouchEvent(true);
@@ -308,30 +305,33 @@ public class SlideMenuPage extends ViewGroup {
                     //滑动速度超过阈值
                     if (Math.abs(velocityX) > 1000) {
                         if (velocityX < -1000) {
-                            if (isSlidingLeft) {     //左滑
+                            if (isSlidingLeft && !isOpen()) {     //左滑
+                                log("velocityX < -1000  ====  smoothOpen()");
                                 smoothOpen();
                             } else {
+                                log("velocityX < -1000  ====  smoothClose()");
                                 smoothClose();
                             }
                         } else {
-                            if (isSlidingLeft) {
+                            if (isSlidingLeft && isOpen()) {
+                                log("velocityX > -1000  ====  smoothClose()");
                                 smoothClose();
                             } else {
+                                log("velocityX > -1000  ====  smoothOpen()");
                                 smoothOpen();
                             }
                         }
                     } else {
-                        if (Math.abs(getScrollX()) > slideMenuLimitDistance) {  //超过滑动最小距离
+                        if (Math.abs(getScrollX()) > slideMenuLimitDistance && !isOpen()) {
+                            log("速度绝对值 < 1000 &&  最短距离 > slideMenuLimitDistance ====  smoothOpen()");
                             smoothOpen();
                         } else {
+                            log("速度绝对值 < 1000  &&  最短距离 < slideMenuLimitDistance ====  smoothClose()");
                             smoothClose();
                         }
                     }
                     releaseVelocityTracker();
                     isTouched = false;
-                    getParent().requestDisallowInterceptTouchEvent(false);
-                    break;
-                default:
                     break;
             }
         }
@@ -349,35 +349,48 @@ public class SlideMenuPage extends ViewGroup {
                     break;
 
                 case MotionEvent.ACTION_UP:
-                    if (isSlidingLeft) {
-                        if (getScrollX() > mTouchSlop) {
-                            if (ev.getX() < getWidth() - getScrollX()) {
-                                if (nonMove) {
-                                    smoothClose();
-                                }
-                                return true;
-                            }
-                        }
-                    } else {
-                        if (-getScrollX() > mTouchSlop) {
-                            if (ev.getX() > -getScrollX()) {
-                                if (nonMove) {
-                                    smoothClose();
-                                }
-                                return true;
-                            }
-                        }
-                    }
+//                    if (isSlidingLeft) {
+//                        if (getScrollX() > mTouchSlop) {
+//                            if (ev.getX() < getWidth() - getScrollX()) {
+//                                if (nonMove) {
+//                                    if (DEBUG) {
+//                                        Log.e(TAG, "onInterceptTouchEvent: nonMove = true");
+//                                    }
+//                                    smoothClose();
+//                                }
+//                                if (DEBUG) {
+//                                    Log.e(TAG, "onInterceptTouchEvent: ACTION_UP ---  ev.getX() < getWidth() - getScrollX()");
+//                                }
+//                                return true;
+//                            }
+//                        }
+//                    }
+//                    else {
+//                        if (-getScrollX() > mTouchSlop) {
+//                            if (ev.getX() > -getScrollX()) {
+//                                if (nonMove) {
+//                                    smoothClose();
+//                                }
+//                                return true;
+//                            }
+//                        }
+//                    }
+                    //menu打开状态，用户向右滑动关闭menu，拦截
                     if (userSliding) {
+                        if (DEBUG) {
+                            log("onInterceptTouchEvent: userSliding = true");
+                        }
                         return true;
                     }
                     break;
             }
 
-            if (isIntercept) {
-                return true;
-            }
-
+//            if (isIntercept) {
+//                if (DEBUG) {
+//                    Log.e(TAG, "onInterceptTouchEvent: isIntercept = true");
+//                }
+//                return true;
+//            }
         }
         return super.onInterceptTouchEvent(ev);
     }
@@ -401,6 +414,7 @@ public class SlideMenuPage extends ViewGroup {
         openAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                getChildAt(0).setEnabled(false);
                 isOpen = true;
             }
         });
@@ -425,6 +439,7 @@ public class SlideMenuPage extends ViewGroup {
         closeAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                getChildAt(0).setEnabled(true);
                 isOpen = false;
             }
         });
@@ -481,4 +496,12 @@ public class SlideMenuPage extends ViewGroup {
         }
         super.onDetachedFromWindow();
     }
+
+
+    private void log(String message) {
+        if (DEBUG) {
+            Log.e(TAG, message);
+        }
+    }
+
 }

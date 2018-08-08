@@ -41,10 +41,6 @@ public class RecyclerViewItemDivider extends RecyclerView.ItemDecoration{
             final int bottom = top + dividerHeight;
             canvas.drawRect(left,top,right,bottom,mPaint);
         }
-
-
-
-
     }
 
     @Override

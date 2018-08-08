@@ -23,12 +23,15 @@
         android:id="@+id/menuBt"
         android:layout_width="100dp"
         android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
         android:text="关闭" />
 
 
     <Button
+        android:id="@+id/del"
         android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:text="测试" />
+        android:background="@android:color/holo_red_dark"
+        android:text="删除" />
 
 </com.gillben.hodgepodgecode.view.SlideMenuPage>
