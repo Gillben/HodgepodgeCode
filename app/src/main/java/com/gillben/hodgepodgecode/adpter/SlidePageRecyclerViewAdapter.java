@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gillben.hodgepodgecode.R;
 import com.gillben.hodgepodgecode.view.SlideMenuPage;
@@ -34,18 +35,30 @@ public class SlidePageRecyclerViewAdapter extends RecyclerView.Adapter<SlidePage
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final SlideMenuPageHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final SlideMenuPageHolder holder, final int position) {
         if (dataList != null) {
             holder.textView.setText(dataList.get(position));
-//            holder.button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Toast.makeText(mContext,"点击关闭", Toast.LENGTH_SHORT).show();
-//                    holder.slideMenuPage.smoothClose();
-//                }
-//            });
-            holder.itemView.setOnClickListener(this);
-            holder.itemView.setTag(position);
+            holder.textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext,"内容"+holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            holder.button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext,"点击关闭"+holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            holder.delBt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dataList.remove(holder.getAdapterPosition());
+                    notifyItemRemoved(holder.getAdapterPosition());
+                }
+            });
+
         }
     }
 
@@ -66,12 +79,14 @@ public class SlidePageRecyclerViewAdapter extends RecyclerView.Adapter<SlidePage
         private SlideMenuPage slideMenuPage;
         private TextView textView;
         private Button button;
+        private Button delBt;
 
         private SlideMenuPageHolder(View itemView) {
             super(itemView);
             slideMenuPage = itemView.findViewById(R.id.slideMenuPage);
             textView = itemView.findViewById(R.id.mainContent);
             button = itemView.findViewById(R.id.menuBt);
+            delBt = itemView.findViewById(R.id.del);
         }
     }
 
