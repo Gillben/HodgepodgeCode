@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
+import com.gillben.hodgepodgecode.R.id.recyclerView
 import com.gillben.hodgepodgecode.adpter.RecyclerViewItemDivider
 import com.gillben.hodgepodgecode.adpter.SlidePageRecyclerViewAdapter
-import kotlinx.android.synthetic.main.activity_slide_page.*
 
 class SlidePageActivity : AppCompatActivity() {
 

@@ -184,7 +184,6 @@ public class SlideMenuPage extends ViewGroup {
 
                 if (lp.height == LayoutParams.MATCH_PARENT) {
                     // Temporarily force children to reuse their old measured width
-                    // FIXME: this may not be right for something like wrapping text?
                     int oldWidth = lp.width;
                     lp.width = child.getMeasuredWidth();
                     // Remeasure with new dimensions
@@ -355,6 +354,7 @@ public class SlideMenuPage extends ViewGroup {
                                 if (nonMove) {
                                     smoothClose();
                                 }
+                                Log.e(TAG, "onInterceptTouchEvent: 第一次拦截" );
                                 return true;
                             }
                         }
@@ -375,6 +375,7 @@ public class SlideMenuPage extends ViewGroup {
             }
 
             if (isIntercept) {
+                Log.e(TAG, "onInterceptTouchEvent: 开启menu，点击其它位置关闭");
                 return true;
             }
 
