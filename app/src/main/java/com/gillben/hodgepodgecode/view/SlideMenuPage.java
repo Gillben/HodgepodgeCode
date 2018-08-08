@@ -348,26 +348,26 @@ public class SlideMenuPage extends ViewGroup {
                     break;
 
                 case MotionEvent.ACTION_UP:
-                    if (isSlidingLeft) {
-                        if (getScrollX() > mTouchSlop) {
-                            if (ev.getX() < getWidth() - getScrollX()) {
-                                if (nonMove) {
-                                    smoothClose();
-                                }
-                                Log.e(TAG, "onInterceptTouchEvent: 第一次拦截");
-                                return true;
-                            }
-                        }
-                    } else {
-                        if (-getScrollX() > mTouchSlop) {
-                            if (ev.getX() > -getScrollX()) {
-                                if (nonMove) {
-                                    smoothClose();
-                                }
-                                return true;
-                            }
-                        }
-                    }
+//                    if (isSlidingLeft) {
+//                        if (getScrollX() > mTouchSlop) {
+//                            if (ev.getX() < getWidth() - getScrollX()) {
+//                                if (nonMove) {
+//                                    smoothClose();
+//                                }
+//                                Log.e(TAG, "onInterceptTouchEvent: 第一次拦截");
+//                                return true;
+//                            }
+//                        }
+//                    } else {
+//                        if (-getScrollX() > mTouchSlop) {
+//                            if (ev.getX() > -getScrollX()) {
+//                                if (nonMove) {
+//                                    smoothClose();
+//                                }
+//                                return true;
+//                            }
+//                        }
+//                    }
 //                    if (isSlidingLeft) {
 //                        if (getScrollX() > mTouchSlop) {
 //                            if (ev.getX() < getWidth() - getScrollX()) {
@@ -395,7 +395,6 @@ public class SlideMenuPage extends ViewGroup {
 //                        }
 //                    }
                     //menu打开状态，用户向右滑动关闭menu，拦截
-
                     if (userSliding) {
                         if (DEBUG) {
                             log("onInterceptTouchEvent: userSliding = true");
@@ -403,11 +402,6 @@ public class SlideMenuPage extends ViewGroup {
                         return true;
                     }
                     break;
-            }
-
-            if (isIntercept) {
-                Log.e(TAG, "onInterceptTouchEvent: 开启menu，点击其它位置关闭");
-                return true;
             }
 
 //            if (isIntercept) {
