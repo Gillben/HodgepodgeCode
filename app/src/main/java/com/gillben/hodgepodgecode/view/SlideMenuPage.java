@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 
 import com.gillben.hodgepodgecode.R;
-import com.gillben.hodgepodgecode.utils.LogUtils;
+import com.gillben.hodgepodgecode.utils.LogUtil;
 
 
 public class SlideMenuPage extends ViewGroup {
@@ -241,7 +241,7 @@ public class SlideMenuPage extends ViewGroup {
                     isIntercept = false;
                     //防止多个手指触碰
                     if (isTouched) {
-                        LogUtils.logWarn(TAG, "dispatchTouchEvent: isTouched = true");
+                        LogUtil.logWarn(TAG, "dispatchTouchEvent: isTouched = true");
                         return false;
                     } else {
                         isTouched = true;
@@ -251,7 +251,7 @@ public class SlideMenuPage extends ViewGroup {
 
                     //如果当前点击和cacheSelf不同，则立刻还原
                     if (cacheSelf != null) {
-                        LogUtils.logWarn(TAG, "dispatchTouchEvent: " + "cacheSelf: " + cacheSelf.hashCode() +
+                        LogUtil.logWarn(TAG, "dispatchTouchEvent: " + "cacheSelf: " + cacheSelf.hashCode() +
                                 " - " + "this: " + SlideMenuPage.this.hashCode());
 
                         if (cacheSelf != SlideMenuPage.this) {
@@ -308,27 +308,27 @@ public class SlideMenuPage extends ViewGroup {
                     if (Math.abs(velocityX) > 1000) {
                         if (velocityX < -1000) {
                             if (isSlidingLeft && !isOpen()) {     //左滑
-                                LogUtils.logWarn(TAG, "velocityX < -1000  ====  smoothOpen()");
+                                LogUtil.logWarn(TAG, "velocityX < -1000  ====  smoothOpen()");
                                 smoothOpen();
                             } else {
-                                LogUtils.logWarn(TAG, "velocityX < -1000  ====  smoothClose()");
+                                LogUtil.logWarn(TAG, "velocityX < -1000  ====  smoothClose()");
                                 smoothClose();
                             }
                         } else {
                             if (isSlidingLeft && isOpen()) {
-                                LogUtils.logWarn(TAG, "velocityX > -1000  ====  smoothClose()");
+                                LogUtil.logWarn(TAG, "velocityX > -1000  ====  smoothClose()");
                                 smoothClose();
                             } else {
-                                LogUtils.logWarn(TAG, "velocityX > -1000  ====  smoothOpen()");
+                                LogUtil.logWarn(TAG, "velocityX > -1000  ====  smoothOpen()");
                                 smoothOpen();
                             }
                         }
                     } else {
                         if (Math.abs(getScrollX()) > slideMenuLimitDistance && !isOpen()) {
-                            LogUtils.logWarn(TAG, "速度绝对值 < 1000 &&  最短距离 > slideMenuLimitDistance ====  smoothOpen()");
+                            LogUtil.logWarn(TAG, "速度绝对值 < 1000 &&  最短距离 > slideMenuLimitDistance ====  smoothOpen()");
                             smoothOpen();
                         } else {
-                            LogUtils.logWarn(TAG, "速度绝对值 < 1000  &&  最短距离 < slideMenuLimitDistance ====  smoothClose()");
+                            LogUtil.logWarn(TAG, "速度绝对值 < 1000  &&  最短距离 < slideMenuLimitDistance ====  smoothClose()");
                             smoothClose();
                         }
                     }
@@ -380,7 +380,7 @@ public class SlideMenuPage extends ViewGroup {
                     //menu打开状态，用户向右滑动关闭menu，拦截
                     if (userSliding) {
                         if (DEBUG) {
-                            LogUtils.logWarn(TAG, "onInterceptTouchEvent: userSliding = true");
+                            LogUtil.logWarn(TAG, "onInterceptTouchEvent: userSliding = true");
                         }
                         return true;
                     }

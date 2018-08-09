@@ -2,7 +2,7 @@ package com.gillben.hodgepodgecode.utils;
 
 import android.util.Log;
 
-public final class LogUtils {
+public final class LogUtil {
 
     private static final boolean LOG_DEBUG = false;
 
