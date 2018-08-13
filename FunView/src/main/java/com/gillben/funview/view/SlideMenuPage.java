@@ -1,4 +1,4 @@
-package com.gillben.hodgepodgecode.view;
+package com.gillben.funview.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -15,8 +15,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 
-import com.gillben.hodgepodgecode.R;
-import com.gillben.hodgepodgecode.utils.LogUtil;
+import com.gillben.funview.R;
+import com.gillben.funview.utils.LogUtil;
 
 
 public class SlideMenuPage extends ViewGroup {

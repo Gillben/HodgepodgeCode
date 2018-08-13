@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gillben.hodgepodgecode.R;
-import com.gillben.hodgepodgecode.view.SlideMenuPage;
+import com.gillben.funview.view.SlideMenuPage;
 
 import java.util.List;
 
