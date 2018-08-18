@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="SlideMenuPage">
         <attr name="SlideEnable" format="boolean" />
         <attr name="SlideLeft" format="boolean" />
         <attr name="SlideIntercept" format="boolean"/>
     </declare-styleable>
 
+    <!-- 进度条样式 -->
+    <declare-styleable name="ProgressBarView">
+        <attr name="text_color" format="color" />
+        <attr name="text_size" format="dimension" />
+        <attr name="default_background_color" format="color" />
+        <attr name="progress_background_color" format="color" />
+        <attr name="endpoint_corner_size" format="dimension" />
+    </declare-styleable>
 </resources>

@@ -1,32 +1,31 @@
 package com.gillben.hodgepodgecode
 
+import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.reflect.KClass
 
-class MainActivity : AppCompatActivity() ,View.OnClickListener{
+class MainActivity : BaseActivity(), View.OnClickListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        initView()
-
+    override fun getLayoutId(): Int {
+        return R.layout.activity_main
     }
 
-    private fun initView() {
+    override fun initView() {
         jumpSlidePage.setOnClickListener(this)
+        jumpWeb.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
-        when(v!!.id){
-            R.id.jumpSlidePage -> startActivity()
+        when (v!!.id) {
+            R.id.jumpSlidePage -> startDirectActivity(SlidePageActivity::class)
+            R.id.jumpWeb -> startDirectActivity(WebViewActivity::class)
         }
     }
 
-    private fun startActivity(){
-        val intent = Intent(this, SlidePageActivity::class.java)
+    private fun <T : Activity> startDirectActivity(activity: KClass<T>) {
+        val intent = Intent(this, activity.java)
         startActivity(intent)
     }
 }
