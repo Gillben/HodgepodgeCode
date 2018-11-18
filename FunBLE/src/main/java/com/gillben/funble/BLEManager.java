@@ -45,7 +45,6 @@ public class BLEManager {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private boolean isScanning = false;    //是否正在搜索蓝牙
     private List<BluetoothDevice> filterList = new ArrayList<>();
-    private String receiveData = "";
     private BluetoothAdapter mBlueAdapter;
     private BluetoothGatt mBluetoothGatt;
     private ScanCallback scanCallback;
@@ -72,7 +71,7 @@ public class BLEManager {
     public void init(Context context) {
         this.mContext = context;
         BluetoothManager mBlueManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
-        if (mBlueManager != null){
+        if (mBlueManager != null) {
             mBlueAdapter = mBlueManager.getAdapter();
         }
     }
@@ -102,7 +101,8 @@ public class BLEManager {
      * @return true表示关闭
      */
     public boolean disable() {
-        return mBlueAdapter != null && mBlueAdapter.disable();
+
+        return mBlueAdapter != null && mBlueAdapter.isEnabled() && mBlueAdapter.disable();
     }
 
 
@@ -226,7 +226,7 @@ public class BLEManager {
      */
     public boolean connectBleDevice(String macAddress, boolean autoConnect) {
         if (CONNECTED || CONNECTING) {
-            return false;
+            return true;
         }
 
         if (!isSupportBluetooth() || !mBlueAdapter.isEnabled() || !BluetoothAdapter.checkBluetoothAddress(macAddress)) {
@@ -464,7 +464,7 @@ public class BLEManager {
     }
 
 
-    private static class BluetoothInstance{
+    private static class BluetoothInstance {
         private static final BLEManager BLE_MANAGER = new BLEManager();
     }
 

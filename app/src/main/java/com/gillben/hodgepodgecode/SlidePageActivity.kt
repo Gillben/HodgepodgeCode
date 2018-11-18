@@ -5,12 +5,8 @@ import com.gillben.hodgepodgecode.adpter.RecyclerViewItemDivider
 import com.gillben.hodgepodgecode.adpter.SlidePageRecyclerViewAdapter
 import kotlinx.android.synthetic.main.activity_slide_page.*
 
-<<<<<<< HEAD
-
-class SlidePageActivity : AppCompatActivity() {
-=======
 class SlidePageActivity : BaseActivity() {
->>>>>>> dcac7222171af69049d81e1c6b95f372c4ed3db5
+
 
     private lateinit var list: List<String>
 
