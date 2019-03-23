@@ -1,9 +1,11 @@
-package com.gillben.hodgepodgecode
+package com.gillben.hodgepodgecode.ui
 
 import android.support.v7.widget.LinearLayoutManager
+import com.gillben.hodgepodgecode.R
 import com.gillben.hodgepodgecode.adpter.RecyclerViewItemDivider
 import com.gillben.hodgepodgecode.adpter.SlidePageRecyclerViewAdapter
 import kotlinx.android.synthetic.main.activity_slide_page.*
+import java.util.*
 
 class SlidePageActivity : BaseActivity() {
 

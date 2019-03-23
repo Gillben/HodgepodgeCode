@@ -1,10 +1,11 @@
-package com.gillben.hodgepodgecode
+package com.gillben.hodgepodgecode.ui
 
 import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
+import com.gillben.hodgepodgecode.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.reflect.KClass
 
@@ -19,12 +20,13 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     override fun initView() {
         jumpSlidePage.setOnClickListener(this)
         jumpWeb.setOnClickListener(this)
+
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.jumpSlidePage ->   openDialog()  //startDirectActivity(SlidePageActivity::class)
-            R.id.jumpWeb -> startDirectActivity(WebViewActivity::class)
+            R.id.jumpWeb -> startDirectActivity(SlidePageActivity::class)
         }
     }
 
